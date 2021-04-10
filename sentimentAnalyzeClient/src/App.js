@@ -34,6 +34,7 @@ class App extends React.Component {
   }
 
   sendForSentimentAnalysis = () => {
+      console.log("send4sent")
     this.setState({sentiment:true});
     let ret = "";
     let url = ".";
@@ -51,17 +52,19 @@ class App extends React.Component {
       this.setState({sentimentOutput:response.data});
       let output = response.data;
       if(response.data === "positive") {
-        output = <div style={{color:"green",fontSize:20}}>{response.data}</div>
+        output = <div style={{color:"blue",fontSize:20}}>{response.data}</div>
       } else if (response.data === "negative"){
-        output = <div style={{color:"red",fontSize:20}}>{response.data}</div>
+        output = <div style={{color:"pink",fontSize:20}}>{response.data}</div>
       } else {
-        output = <div style={{color:"orange",fontSize:20}}>{response.data}</div>
+        output = <div style={{color:"yellow",fontSize:20}}>{response.data}</div>
       }
       this.setState({sentimentOutput:output});
     });
   }
 
   sendForEmotionAnalysis = () => {
+
+    console.log("send4emo")
     this.setState({sentiment:false});
     let ret = "";
     let url = ".";
@@ -73,7 +76,8 @@ class App extends React.Component {
     ret = axios.get(url);
 
     ret.then((response)=>{
-      this.setState({sentimentOutput:<EmotionTable emotions={response.data}/>});
+      //this.setState({sentimentOutput:<EmotionTable emotions={response.data}/>});
+      this.setState({sentimentOutput:"test"});
   });
   }
   

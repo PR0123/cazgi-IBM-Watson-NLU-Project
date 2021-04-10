@@ -31,28 +31,29 @@ app.get("/",(req,res)=>{
   });
 
 app.get("/url/emotion", (req,res) => {
-    /*
-    const analyzeParams = {
-        'html': '<html><head><title>Fruits</title></head><body><h1>Apples and Oranges</h1><p>I love apples! I don\'t like oranges.</p></body></html>',
+     const analyzeParams = {
+  'url': req.query.url,
+  'features': {
+    'entities': {
+      'emotion': true
+    }, 
+    'keywords': {
+      'emotion': true
+    }, 
+  }
+};
 
-        'features': {
-            'emotion': {
-                'targets': [
-                    'apples',
-                    'oranges'
-                ]
-            }
-        }
-    };
-    naturalLanguageUnderstanding.analyze(analyzeParams)
-    .then(analysisResults => {
-        console.log(JSON.stringify(analysisResults, null, 2));
-        res.send(JSON.stringify(analysisResults));
-    })
-    .catch(err => {
-        console.log('error:', err);
-    });*/
-    return res.send({"happy":"90","sad":"10"});
+getNLUInstance().analyze(analyzeParams)
+  .then(analysisResults => {
+    //console.log(JSON.stringify(analysisResults, null, 2));
+    tmp = analysisResults.result.entities[0].emotion
+    res.send({emotions: tmp});
+    //res.send(req.query.text)
+  })
+  .catch(err => {
+    console.log('error:', err);
+  });
+    //return res.send({"happy":"90","sad":"10"});
 });
 
 app.get("/url/sentiment", (req,res) => {
@@ -70,7 +71,7 @@ app.get("/url/sentiment", (req,res) => {
 getNLUInstance().analyze(analyzeParams)
   .then(analysisResults => {
     console.log(JSON.stringify(analysisResults, null, 2));
-    res.send(JSON.stringify(analysisResults.result.entities[0].sentiment.label) + "for" + req.query.url);
+    res.send(JSON.stringify(analysisResults.result.entities[0].sentiment.label));
   })
   .catch(err => {
     console.log('error:', err);
@@ -82,28 +83,30 @@ getNLUInstance().analyze(analyzeParams)
 });
 
 app.get("/text/emotion", (req,res) => {
-    /*
-    const analyzeParams = {
-        'html': '<html><head><title>Fruits</title></head><body><h1>Apples and Oranges</h1><p>I love apples! I don\'t like oranges.</p></body></html>',
+   const analyzeParams = {
+  'text': req.query.text,
+  'features': {
+    'entities': {
+      'emotion': true,
+      'limit': 1
+    }, 
+    'keywords': {
+      'emotion': true
+    }, 
+  }
+};
 
-        'features': {
-            'emotion': {
-                'targets': [
-                    'apples',
-                    'oranges'
-                ]
-            }
-        }
-    };
-    naturalLanguageUnderstanding.analyze(analyzeParams)
-    .then(analysisResults => {
-        console.log(JSON.stringify(analysisResults, null, 2));
-        res.send(JSON.stringify(analysisResults));
-    })
-    .catch(err => {
-        console.log('error:', err);
-    });*/
-    return res.send({"happy":"90","sad":"10"});
+getNLUInstance().analyze(analyzeParams)
+  .then(analysisResults => {
+    //console.log(JSON.stringify(analysisResults, null, 2));
+    res.send({emotions: analysisResults.result.keywords[0].emotion});
+    //res.send(req.query.text)
+  })
+  .catch(err => {
+    console.log('error:', err);
+  });
+
+   //return res.send({"happy":"90","sad":"10"});
 });
 
 app.get("/text/sentiment", (req,res) => {
@@ -114,14 +117,17 @@ app.get("/text/sentiment", (req,res) => {
     'entities': {
       'sentiment': true,
       'limit': 1
-    }
+    }, 
+    'keywords': {
+      'sentiment': true
+    }, 
   }
 };
 
 getNLUInstance().analyze(analyzeParams)
   .then(analysisResults => {
     console.log(JSON.stringify(analysisResults, null, 2));
-    res.send(JSON.stringify(analysisResults.result.entities[0].sentiment.label) + "for" + req.query.text);
+    res.send(JSON.stringify(analysisResults.result.keywords[0].sentiment.label));
     //res.send(req.query.text)
   })
   .catch(err => {
