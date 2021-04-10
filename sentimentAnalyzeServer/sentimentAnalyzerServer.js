@@ -47,7 +47,7 @@ getNLUInstance().analyze(analyzeParams)
   .then(analysisResults => {
     //console.log(JSON.stringify(analysisResults, null, 2));
     tmp = analysisResults.result.entities[0].emotion
-    res.send({emotions: tmp});
+    res.send(tmp);
     //res.send(req.query.text)
   })
   .catch(err => {
@@ -98,8 +98,8 @@ app.get("/text/emotion", (req,res) => {
 
 getNLUInstance().analyze(analyzeParams)
   .then(analysisResults => {
-    //console.log(JSON.stringify(analysisResults, null, 2));
-    res.send({emotions: analysisResults.result.keywords[0].emotion});
+    console.log(JSON.stringify(analysisResults, null, 2));
+    res.send(analysisResults.result.keywords[0].emotion);
     //res.send(req.query.text)
   })
   .catch(err => {

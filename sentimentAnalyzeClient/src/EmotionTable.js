@@ -19,7 +19,6 @@ class EmotionTable extends React.Component {
             })
       return (  
         <div>
-"hello"
           <table className="table table-bordered">
             <tbody>
             {mappingemotions}
